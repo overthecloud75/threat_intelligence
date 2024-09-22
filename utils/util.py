@@ -4,15 +4,12 @@ from datetime import datetime, timedelta
 import requests
 from urllib.parse import urlparse, parse_qs
 
-from configs import CSV_DIR, CSV_BASE, OTX_API_KEY, logger
+from configs import CSV_DIR, CSV_BASE, TI_API_KEY, TI_API_URL, logger
 
-
-# API 엔드포인트 URL
-URL = 'https://otx.alienvault.com/api/v1/pulses/subscribed'
 
 # 헤더에 API 키 포함
 headers = {
-    'X-OTX-API-KEY': OTX_API_KEY,
+    'X-OTX-API-KEY': TI_API_KEY,
     'Content-Type': 'application/json'
 }
 
@@ -49,7 +46,7 @@ def get_results_from_otx():
         'limit': 1000
     }
     # GET 요청 보내기
-    response = requests.get(URL, headers=headers, params=params)
+    response = requests.get(TI_API_URL, headers=headers, params=params)
 
     # 응답 데이터 처리
     if response.status_code == 200:

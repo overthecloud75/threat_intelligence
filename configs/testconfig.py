@@ -1,9 +1,11 @@
 # OTX
-OTX_API_KEY = ''
+TI_API_KEY = ''
+TI_API_URL = 'https://example.com/api/v1'
+TI_NAME = 'example'
 
-# OLLAMA
-OLLAMA_URL = 'http://localhost:11434/api/generate'
-OLLAMA_MODEL = 'gemma2:latest'
+# LLM
+LLM_URL = 'http://localhost:11434/api/generate'
+LLM_MODEL = 'gemma2'
 
 CSV_BASE = 'TI'
 

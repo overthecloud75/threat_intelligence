@@ -7,7 +7,7 @@ from email.encoders import encode_base64
 import os
 
 from .ai import summarize_with_bare_api
-from configs import ACCOUNT, MAIL_SERVER, CC, TO, CSV_DIR, logger
+from configs import TI_NAME, LLM_MODEL, ACCOUNT, MAIL_SERVER, CC, TO, CSV_DIR, logger
 
 def send_email(results, subject=None, include_cc=False, attached_file=None):
 
@@ -74,6 +74,22 @@ def get_message(subject, results):
             .vertical-table td {
                 vertical-align: top;
             }
+            /* 기본 URL 스타일 */
+            .link-desktop {
+                display: inline;
+            }
+            .link-mobile {
+                display: none;
+            }
+            /* 모바일 뷰에서 URL 숨기고 'link' 표시 */
+            @media only screen and (max-width: 600px) {
+                .link-desktop {
+                    display: none;
+                }
+                .link-mobile {
+                    display: inline;
+                }
+            }
         </style>
     </head>
     <body>
@@ -81,6 +97,7 @@ def get_message(subject, results):
 
     html += f"""
         <table class="vertical-table">
+            <p>출처: {TI_NAME}, description은 LMM({LLM_MODEL})으로 요약 번역</p>
             <caption style="font-size: 15px; font-weight: bold; color: #333; text-align: center; margin-bottom: 10px;">{subject}</caption>
             <thead>
                 <tr>
@@ -88,7 +105,7 @@ def get_message(subject, results):
                     <th style="text-align: center;">Name</th>
                     <th style="text-align: center;">Adversary</th>
                     <th style="text-align: center;">Description</th>
-                    <th style="text-align: center;">Reference</th>
+                    <th style="text-align: center;">Ref</th>
                 </tr>
             </thead>
             <tbody>
@@ -110,7 +127,10 @@ def get_message(subject, results):
                 <td>{result['name']}</td>
                 <td>{result['adversary']}</td>
                 <td>{summarized_description}</td>
-                <td><a href={reference}>{reference}</a></td>
+                <td>
+                    <a href={reference} class="link-desktop">{reference}</a>
+                    <a href={reference} class="link-mobile">link</a>
+                </td>
             </tr>
         """
     html += '''

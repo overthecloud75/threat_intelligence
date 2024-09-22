@@ -4,7 +4,7 @@ from langchain.schema import StrOutputParser
 import requests
 import time
 
-from configs import OLLAMA_URL, OLLAMA_MODEL, logger
+from configs import LLM_URL, LLM_MODEL, logger
 
 
 headers = {
@@ -19,7 +19,7 @@ def summarize_with_langchain(text):
             "\n\n"
             "Summary:"
         )
-        llm = ChatOllama(model='gemma2:latest', verbose=True)
+        llm = ChatOllama(model=LLM_MODEL, verbose=True)
         runnable = prompt | llm | StrOutputParser()
         response = runnable.invoke({'text': text})
         response = response.replace('\n', '')
@@ -53,8 +53,8 @@ def summarize_with_bare_api(text):
 
 def get_from_ollama(prompt):
     timestamp = time.time()
-    data = {'model': OLLAMA_MODEL, 'prompt': prompt, 'stream': False}
-    response = requests.post(OLLAMA_URL, json=data, headers=headers)
+    data = {'model': LLM_MODEL, 'prompt': prompt, 'stream': False}
+    response = requests.post(LLM_URL, json=data, headers=headers)
     logger.info(f"LMM resposne_time: {round(time.time() - timestamp, 2)}")
     # 응답 데이터 처리
     if response.status_code == 200:
