@@ -6,8 +6,7 @@ from email.utils import COMMASPACE
 from email.encoders import encode_base64
 import os
 
-from .ai import summarize_with_bare_api
-from configs import PRODUCTION_MODE, TI_NAME, LLM_MODEL, ACCOUNT, MAIL_SERVER, CC, TO, CSV_DIR, logger
+from configs import TI_NAME, LLM_MODEL, ACCOUNT, MAIL_SERVER, CC, TO, CSV_DIR, logger
 
 def send_email(results, subject=None, include_cc=False, attached_file=None):
 
@@ -98,6 +97,7 @@ def get_message(subject, results):
     html += f"""
         <table class="vertical-table">
             <p>출처: {TI_NAME}, description은 LMM({LLM_MODEL})으로 요약 번역</p>
+            <p>첨부 파일의 IOC 정보를 Proxy, Firewall, Anti-Virus에 적용할 수 있습니다.</p>
             <caption style="font-size: 15px; font-weight: bold; color: #333; text-align: center; margin-bottom: 10px;">{subject}</caption>
             <thead>
                 <tr>
@@ -112,25 +112,15 @@ def get_message(subject, results):
     """
 
     for i, result in enumerate(results):
-        if not PRODUCTION_MODE and i > 0:
-            # dev test를 위해서 설정 
-            break
-        # modified = result['modified'].split('.')[0]+'z'
-        summarized_description = summarize_with_bare_api(result['description'])
-        if result['references']:
-            reference = result['references'][0]
-        else:
-            reference = ''
-        
         html += f"""
             <tr>
                 <td style="text-align: center;">{i + 1}</td>
                 <td>{result['name']}</td>
                 <td class="link-desktop">{result['adversary']}</td>
-                <td>{summarized_description}</td>
+                <td>{result['summary']}</td>
                 <td>
-                    <a href={reference} class="link-desktop">{reference}</a>
-                    <a href={reference} class="link-mobile">link</a>
+                    <a href={result['reference']} class="link-desktop">{result['reference']}</a>
+                    <a href={result['reference']} class="link-mobile">link</a>
                 </td>
             </tr>
         """

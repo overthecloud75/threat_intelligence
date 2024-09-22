@@ -1,4 +1,8 @@
 * 24/09/22
+    - 0.0.4 (db.py) <br>
+        save data to db <br>
+
+* 24/09/22
     - 0.0.3 (configs) <br>
         separate dev_config from prod_config <br>
 
