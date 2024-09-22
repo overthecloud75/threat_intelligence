@@ -5,7 +5,10 @@ lib/
 lib64
 csv/
 logs/
-pyvenv.cfg
+configs/dev_config.py
 
-prod_config.py
-dev_config.py
+pyvenv.cfg
+.gitignore
+CHANGLOG.md
+
+

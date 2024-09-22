@@ -1,5 +1,7 @@
 import os
 
+PRODUCTION_MODE = True  # Release를 의미 
+
 # Log
 LOG_DIR = 'logs'
 if not os.path.exists(LOG_DIR ):

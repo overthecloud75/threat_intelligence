@@ -1,6 +1,10 @@
 from .config import *
+
 try:
-    from .mainconfig import *
+    if PRODUCTION_MODE:
+        from .prod_config import *
+    else:
+        from .dev_config import *
 except Exception:
-    from .testconfig import *
+    from .test_config import *
 from .logging_config import logger

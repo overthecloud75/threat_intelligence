@@ -7,7 +7,7 @@ from email.encoders import encode_base64
 import os
 
 from .ai import summarize_with_bare_api
-from configs import TI_NAME, LLM_MODEL, ACCOUNT, MAIL_SERVER, CC, TO, CSV_DIR, logger
+from configs import PRODUCTION_MODE, TI_NAME, LLM_MODEL, ACCOUNT, MAIL_SERVER, CC, TO, CSV_DIR, logger
 
 def send_email(results, subject=None, include_cc=False, attached_file=None):
 
@@ -103,7 +103,7 @@ def get_message(subject, results):
                 <tr>
                     <th style="text-align: center;">No</th>
                     <th style="text-align: center;">Name</th>
-                    <th style="text-align: center;">Adversary</th>
+                    <th class="link-desktop" style="text-align: center;">Adversary</th>
                     <th style="text-align: center;">Description</th>
                     <th style="text-align: center;">Ref</th>
                 </tr>
@@ -112,8 +112,9 @@ def get_message(subject, results):
     """
 
     for i, result in enumerate(results):
-        #if i > 0:
-        #    break
+        if not PRODUCTION_MODE and i > 0:
+            # dev test를 위해서 설정 
+            break
         # modified = result['modified'].split('.')[0]+'z'
         summarized_description = summarize_with_bare_api(result['description'])
         if result['references']:
@@ -125,7 +126,7 @@ def get_message(subject, results):
             <tr>
                 <td style="text-align: center;">{i + 1}</td>
                 <td>{result['name']}</td>
-                <td>{result['adversary']}</td>
+                <td class="link-desktop">{result['adversary']}</td>
                 <td>{summarized_description}</td>
                 <td>
                     <a href={reference} class="link-desktop">{reference}</a>
